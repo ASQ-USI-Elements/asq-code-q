@@ -1,0 +1,89 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ace-element/ace-element.html">
+<link rel="import" href="../code-mirror/code-mirror.html">
+<link rel="import" href="../asq-element-conf/asq-element-conf.html">
+
+<polymer-element name="asq-code" attributes="theme mode value tabSize label">
+  <template>
+    <style>
+      :host {
+
+      }
+      #code {
+        margin: 1em;
+      }
+
+      #ace {
+        width: 98%;
+        height: 510px;
+        margin: 1em;
+        position: relative;
+      }
+
+      #code_mirror {
+        width: 98%;
+        height: 510px;
+        margin: 1em;
+        position: relative;
+      }
+
+    </style>
+
+    <div id="code">
+      <div>
+        <!-- <content></content> -->
+        <asq-stem><h2>Complete the following program.</h2></asq-stem>
+      </div>
+      <div>
+        <code-mirror theme="{{theme}}" mode="{{mode}}" value="{{value}}"  tabSize="{{tabSize}}" id="code_mirror">{{value}}</code-mirror>
+       <!--  <ace-element theme="{{theme}}" mode="{{mode}}" value="{{value}}" tabSize="{{tabSize}}" id="ace">{{value}}</ace-element> -->
+    
+      </div>
+    </div>
+  </template>
+
+  <script>
+    (function () {
+
+      var p = {
+        isQuestion_: true,
+        type_: "asq-code",
+
+        mode: 'javascript',
+        theme: 'monokai',
+        readonly: false,
+        wrap: false,
+
+        domReady: function  () {
+         
+        },
+
+        getSubmission: function() {
+          if ( this.role !== this.Roles.VIEWER ) {
+            return;
+          }
+
+          // if ( typeof this.value == 'undefined' ) {
+          //   this.value = "";
+          // }
+
+          //TODO: improve this
+          submisstion = this.$.code_mirror.mirror.getValue().replace(/[\s]+/g, " ").trim();
+          // submisstion = this.$.ace.editor.getSession().getValue().replace(/[\s]+/g, " ").trim();
+          
+          return {
+            questionId: "",
+            timestamp: new Date(),
+            submisstion: submisstion
+          };
+        }
+      };
+
+      ASQ.mixin(p, ASQ.ElementType);
+      ASQ.mixin(p, ASQ.Role);
+      Polymer('asq-code', p);
+
+    })();
+    
+  </script>
+</polymer-element>
