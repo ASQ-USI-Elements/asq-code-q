@@ -1,7 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../ace-element/ace-element.html">
 <link rel="import" href="../code-mirror/code-mirror.html">
-<link rel="import" href="../asq-element-conf/asq-element-conf.html">
+<link rel="import" href="../asq-element-common/asq-element-common.html">
 
 <polymer-element name="asq-code" attributes="theme mode value tabSize label">
   <template>
@@ -79,9 +79,9 @@
         }
       };
 
-      Polymer.mixin2(p, ASQ.ElementTypeMixin);
-      Polymer.mixin2(p, ASQ.RoleMixin);
-      Polymer.mixin2(p, ASQ.QuestionTypeMixin);
+      ASQ.mixin2(p, ASQ.ElementTypeMixin);
+      ASQ.mixin2(p, ASQ.RoleMixin);
+      ASQ.mixin2(p, ASQ.QuestionTypeMixin);
 
       Polymer('asq-code', p);
 
