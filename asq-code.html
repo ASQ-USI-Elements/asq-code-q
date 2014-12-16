@@ -79,10 +79,9 @@
         }
       };
 
-      ASQ.mixin2(p, ASQ.ElementTypeMixin);
-      ASQ.mixin2(p, ASQ.RoleMixin);
-      ASQ.mixin2(p, ASQ.QuestionTypeMixin);
 
+      ASQ.mixin2(p, ASQ.RoleMixin);
+      Polymer.mixin(p, ASQ.ElementTypeMixin, ASQ.QuestionTypeMixin);
       Polymer('asq-code', p);
 
     })();
