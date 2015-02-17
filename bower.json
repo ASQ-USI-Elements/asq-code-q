@@ -13,7 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.1",
-    "polymer": "PolymerLabs/code-mirror"
+    "ace-element": "git@github.com:PolymerLabs/ace-element.git",
+    "asq-base": "ASQ-USI/asq-base#master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.0-rc1"

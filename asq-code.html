@@ -1,61 +1,70 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../ace-element/ace-element.html">
 <link rel="import" href="../code-mirror/code-mirror.html">
-<link rel="import" href="../asq-element-common/asq-element-common.html">
+<link rel="import" href="../asq-base/asq-base.html">
 
 <polymer-element name="asq-code" attributes="theme mode value tabSize label">
   <template>
     <style>
-      :host {
+    :host{
+      min-width:100px;
+      min-height: 100px;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-direction: normal;
+      -moz-box-direction: normal;
+      -webkit-box-orient: vertical;
+      -moz-box-orient: vertical;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      position:relative;
+    }
 
-      }
-      #code {
-        margin: 1em;
-      }
+    #aceContainer{
+      position:relative;
+    }
 
-      #ace {
-        width: 98%;
-        height: 510px;
-        margin: 1em;
-        position: relative;
-      }
 
-      #code_mirror {
-        width: 98%;
-        height: 510px;
-        margin: 1em;
-        position: relative;
-      }
 
     </style>
+      <div id="leContent"><content select="asq-stem"></content></div>
+      <div id="aceContainer" flex>
+        <ace-element id="codeEditor" mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}"></ace-element>
+      </div>
 
-    <div id="code">
-      <div>
-        <!-- <content></content> -->
-        <asq-stem><h2>Complete the following program.</h2></asq-stem>
-      </div>
-      <div>
-        <code-mirror theme="{{theme}}" mode="{{mode}}" value="{{value}}"  tabSize="{{tabSize}}" id="code_mirror">{{value}}</code-mirror>
-       <!--  <ace-element theme="{{theme}}" mode="{{mode}}" value="{{value}}" tabSize="{{tabSize}}" id="ace">{{value}}</ace-element> -->
     
-      </div>
-    </div>
+
   </template>
 
   <script>
     (function () {
 
       var p = {
-        isQuestion_: true,
-        type_: "asq-code",
+        isASQQuestionTypeElement: true,
+        type: "asq-code",
 
         mode: 'javascript',
         theme: 'monokai',
         readonly: false,
         wrap: false,
 
-        domReady: function  () {
-         
+        //This is necessary in case the codeEditor get's reattached to the DOM after `this`
+        attached: function(){
+          var code = this.querySelector("code");
+          if(code){
+            this.$.codeEditor.value = code.textContent;
+          }
+        },
+
+        ready: function(){
+          var code = this.querySelector("code");
+          if(code){
+            this.$.codeEditor.textContent = code.textContent;
+          }
         },
 
         submit: function() {
@@ -63,25 +72,17 @@
             return;
           }
 
-          // if ( typeof this.value == 'undefined' ) {
-          //   this.value = "";
-          // }
+          var submission = this.$.codeEditor.editor.session.getValue();
 
-          //TODO: improve this
-          submission = this.$.code_mirror.mirror.getValue().replace(/[\s]+/g, " ").trim();
-          // submission = this.$.ace.editor.getSession().getValue().replace(/[\s]+/g, " ").trim();
-          
           return {
-            questionId: "",
+            questionUid: this.uid,
             timestamp: new Date(),
             submission: submission
           };
-        }
+        },
       };
 
-
-      ASQ.mixin2(p, ASQ.RoleMixin);
-      Polymer.mixin(p, ASQ.ElementTypeMixin, ASQ.QuestionTypeMixin);
+      ASQ.asqify(p, true);
       Polymer('asq-code', p);
 
     })();
