@@ -3,6 +3,25 @@
 <link rel="import" href="../code-mirror/code-mirror.html">
 <link rel="import" href="../asq-base/asq-base.html">
 
+<!--
+`asq-code` is a question type where students can answer programming question proposed by professors. It is built above the `ace` editor.
+
+##### Example
+    <asq-code mode="java" tabSize="2">
+      <asq-stem><h4>Implement a for loop in Java</h4></asq-stem>
+      <code>public class C {
+        public void m() {
+          int i = i + 5 + ((int)5.0) + ((int)5f);
+        }
+      }
+      </code>
+    </asq-code>
+
+@element asq-code
+@group ASQ Elements
+@blurb Element that used for programming questions.
+@homepage http://github.com/ASQ_USI/asq-code
+-->
 <polymer-element name="asq-code" attributes="theme mode value tabSize label">
   <template>
     <style>
@@ -45,10 +64,32 @@
 
       var p = {
         isASQQuestionTypeElement: true,
-        type: "asq-code",
 
+        /**
+         * This attribute defines the code mode of the edior.
+         *
+         * @attribute mode
+         * @type string
+         * @default 'javascript'
+         */
         mode: 'javascript',
+
+        /**
+         * This attribute defines the theme of the edior.
+         *
+         * @attribute theme
+         * @type string
+         * @default 'monokai'
+         */
         theme: 'monokai',
+
+        /**
+         * If this is `true`, then the edior is ready-only.
+         *
+         * @attribute readonly
+         * @type boolean
+         * @default false
+         */
         readonly: false,
         wrap: false,
 
@@ -67,6 +108,12 @@
           }
         },
 
+        /**
+         * The `submit` method will submit the answer to a wrapped 'asq-exercise' instance. 
+         * Only useful when the `role` is `viewer`.
+         *
+         * @method submit
+         */
         submit: function() {
           if ( this.role !== this.Roles.VIEWER ) {
             return;
