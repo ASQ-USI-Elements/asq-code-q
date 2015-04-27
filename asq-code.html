@@ -1,6 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../ace-element/ace-element.html">
-<link rel="import" href="../code-mirror/code-mirror.html">
 <link rel="import" href="../asq-base/asq-base.html">
 
 <!--
@@ -22,12 +21,12 @@
 @blurb Element that used for programming questions.
 @homepage http://github.com/ASQ_USI/asq-code
 -->
-<polymer-element name="asq-code" attributes="theme mode value tabSize label">
+<polymer-element name="asq-code" attributes="fontSize tabSize">
   <template>
     <style>
     :host{
       min-width:100px;
-      min-height: 100px;
+      min-height: 200px;
       display: -webkit-box;
       display: -moz-box;
       display: -webkit-flex;
@@ -47,14 +46,13 @@
       position:relative;
     }
 
-
-
     </style>
-      <div id="leContent"><content select="asq-stem"></content></div>
-      <div id="aceContainer" flex>
-        <ace-element id="codeEditor" mode="{{mode}}" theme="{{theme}}" tabSize="{{tabSize}}"></ace-element>
-      </div>
-
+    <div id="leContent"><content select="asq-stem"></content></div>
+    <div id="aceContainer" flex>
+      <ace-element id="editor" value="{{value}}" theme="{{theme}}" 
+      mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}"
+      fontSize="{{fontSize}}" tabSize="{{tabSize}}"></ace-element>
+    </div>
     
 
   </template>
@@ -63,64 +61,78 @@
     (function () {
 
       var p = {
-        isASQQuestionTypeElement: true,
 
-        /**
-         * This attribute defines the code mode of the edior.
-         *
-         * @attribute mode
-         * @type string
-         * @default 'javascript'
-         */
-        mode: 'javascript',
+        publish: {
 
-        /**
-         * This attribute defines the theme of the edior.
-         *
-         * @attribute theme
-         * @type string
-         * @default 'monokai'
-         */
-        theme: 'monokai',
+          /**
+           * Set to true to style the element as disabled.
+           * Bind to `readonly` of ace-editor.
+           * 
+           * @attribute disabled
+           * @type boolean
+           * @default false
+           */
+          disabled: {value: false, reflect: true},
 
-        /**
-         * If this is `true`, then the edior is ready-only.
-         *
-         * @attribute readonly
-         * @type boolean
-         * @default false
-         */
-        readonly: false,
-        wrap: false,
+          /**
+           * Set the content of the editor.
+           * 
+           * @attribute value
+           * @type object
+           * @default null
+           */
+          value: null,
 
-        //This is necessary in case the codeEditor get's reattached to the DOM after `this`
-        attached: function(){
-          var code = this.querySelector("code");
-          if(code){
-            this.$.codeEditor.value = code.textContent;
+          /**
+           * Set or get the theme of ace-editor.
+           * 
+           * @attribute theme
+           * @type string
+           * @default 'monokai'
+           */
+          theme: 'monokai',
+
+          /**
+           * Set or get the mode of ace-editor.
+           * 
+           * @attribute mode
+           * @type string
+           * @default 'javascript'
+           */
+          mode: 'javascript',
+
+          wrap: false,
+
+        },
+        
+
+        domReady: function(){
+          if ( !this.value ) {
+            var code = this.querySelector('code');
+            if ( code ) {
+              this.value = code.textContent;
+            }
           }
         },
 
-        ready: function(){
-          var code = this.querySelector("code");
-          if(code){
-            this.$.codeEditor.textContent = code.textContent;
-          }
-        },
-
         /**
-         * The `submit` method will submit the answer to a wrapped 'asq-exercise' instance. 
-         * Only useful when the `role` is `viewer`.
+         * The `submit` method returns an object that respresents the submission of this question. The object has the following structure:
+
+             {
+                questionUid: this.uid, 
+                timestamp: new Date(),
+                submission: [] 
+             }
+         * Only enabled when the `role` of the element is <b>viewer</b>.
          *
          * @method submit
          */
         submit: function() {
-          if ( this.role !== this.Roles.VIEWER ) {
+          if ( this.role !== this.roles.VIEWER ) {
             return;
           }
 
-          var submission = this.$.codeEditor.editor.session.getValue();
-
+          var submission = this.$.editor.editor.session.getValue();
           return {
             questionUid: this.uid,
             timestamp: new Date(),

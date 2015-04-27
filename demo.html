@@ -3,7 +3,7 @@
 <head>
   <meta name="asq-code" content="width=device-width, initial-scale=1, user-scalable=no">
 
-  <title>ASQ | Code</title>
+  <title>ASQ-CODE | Demo</title>
 
   <script src="../webcomponentsjs/webcomponents.js"></script>
 
@@ -14,22 +14,29 @@
     body{
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-    asq-code{
-      height:600px;
+
+    asq-code {
+      height: 300px;
+      width: 600px;
     }
+
   </style>
 
 </head>
 <body>
 
-  <asq-code mode="java" tabSize="2">
-    <asq-stem><h4>Implement a for loop in Java</h4></asq-stem>
-    <code>public class C {      
-  public void m() {
-    int i = i + 5 + ((int)5.0) + ((int)5f);
-  }
-}</code>
+  <asq-code mode="java">
+    <asq-stem><h4>Implement quick sort algorithm in Java</h4></asq-stem>
+    <code>public class Main { 
+    public static void main(String args) {
+
+    }
+} </code>
   </asq-code>
+
+  <script>
+    var x = document.querySelector('asq-code');
+  </script>
 
 </body>
 </html>
