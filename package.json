@@ -6,7 +6,7 @@
   "homepage": "https://github.com/ASQ-USI/asq-code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --harmony test/server"
   },
   "repository": {
     "type": "git",
