@@ -21,25 +21,12 @@
 @blurb Element that used for programming questions.
 @homepage http://github.com/ASQ-USI/asq-code
 -->
-<polymer-element name="asq-code-viewer" attributes="fontSize tabSize disabled value theme mode wrap">
+<polymer-element name="asq-code-viewer" attributes="fontSize tabSize disabled value theme mode wrap" flex vertical layout>
   <template>
     <style>
     :host{
       min-width:100px;
-      min-height: 200px;
-      display: -webkit-box;
-      display: -moz-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-direction: normal;
-      -moz-box-direction: normal;
-      -webkit-box-orient: vertical;
-      -moz-box-orient: vertical;
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      position:relative;
+      min-height: 300px;
     }
 
     #aceContainer{
@@ -49,16 +36,17 @@
     </style>
     <div id="leContent"><content select="asq-stem"></content></div>
     <div id="aceContainer" flex>
-      <ace-element id="editor" value="{{value}}" theme="{{theme}}" 
-      mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}"
+      <ace-element id="editor" value="{{value}}" theme="{{theme}}"
+      mode="{{mode}}" readonly="{{disabled}}" wrap?="{{wrap}}"
       fontSize="{{fontSize}}" tabSize="{{tabSize}}">{{value}}</ace-element>
     </div>
-    
+
 
   </template>
 
   <script>
     (function () {
+
 
       var p = {
 
@@ -67,7 +55,7 @@
           /**
            * Set to true to style the element as disabled.
            * Bind to `readonly` of ace-editor.
-           * 
+           *
            * @attribute disabled
            * @type boolean
            * @default false
@@ -76,7 +64,7 @@
 
           /**
            * Set the content of the editor.
-           * 
+           *
            * @attribute value
            * @type object
            * @default null
@@ -85,7 +73,7 @@
 
           /**
            * Set or get the theme of ace-editor.
-           * 
+           *
            * @attribute theme
            * @type string
            * @default 'monokai'
@@ -94,7 +82,7 @@
 
           /**
            * Set or get the mode of ace-editor.
-           * 
+           *
            * @attribute mode
            * @type string
            * @default 'javascript'
@@ -104,7 +92,7 @@
           wrap: false,
 
         },
-        
+
 
         domReady: function(){
           if ( !this.value ) {
@@ -119,9 +107,9 @@
          * The `submit` method returns an object that respresents the submission of this question. The object has the following structure:
 
              {
-                questionUid: this.uid, 
+                questionUid: this.uid,
                 timestamp: new Date(),
-                submission: [] 
+                submission: []
              }
          * Only enabled when the `role` of the element is <b>viewer</b>.
          *
@@ -145,6 +133,6 @@
       Polymer('asq-code-viewer', p);
 
     })();
-    
+
   </script>
 </polymer-element>

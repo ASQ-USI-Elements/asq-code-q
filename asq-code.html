@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../ace-element/ace-element.html">
 <link rel="import" href="../asq-base/asq-base.html">
 <link rel="import" href="elements/asq-code-presenter/asq-code-presenter.html">
 <link rel="import" href="elements/asq-code-viewer/asq-code-viewer.html">
@@ -24,39 +23,26 @@
 @blurb Element that used for programming questions.
 @homepage http://github.com/ASQ-USI/asq-code
 -->
-<polymer-element name="asq-code" attributes="fontSize tabSize disabled value theme mode wrap">
+<polymer-element name="asq-code" attributes="fontSize tabSize disabled value theme mode wrap" vertical layout>
   <template>
     <style>
     :host{
       min-width:100px;
       min-height: 200px;
-/*      display: -webkit-box;
-      display: -moz-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-direction: normal;
-      -moz-box-direction: normal;
-      -webkit-box-orient: vertical;
-      -moz-box-orient: vertical;
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      position:relative;*/
     }
 
     </style>
-   
+
     <!-- Viewer -->
     <template if="{{role == roles.VIEWER}}">
-      <asq-code-viewer mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}" >
+      <asq-code-viewer mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}" >
         <content></content>
       </asq-code-viewer>
     </template>
-    
+
     <!-- Presenter -->
    <template if="{{role == roles.PRESENTER}}">
-      <asq-code-presenter mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
+      <asq-code-presenter mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
         <content></content>
       </asq-code-presenter>
     </template>
@@ -73,7 +59,7 @@
           /**
            * Set to true to style the element as disabled.
            * Bind to `readonly` of ace-editor.
-           * 
+           *
            * @attribute disabled
            * @type boolean
            * @default false
@@ -82,7 +68,7 @@
 
           /**
            * Set the content of the editor.
-           * 
+           *
            * @attribute value
            * @type object
            * @default null
@@ -91,7 +77,7 @@
 
           /**
            * Set or get the theme of ace-editor.
-           * 
+           *
            * @attribute theme
            * @type string
            * @default 'monokai'
@@ -100,7 +86,7 @@
 
           /**
            * Set or get the mode of ace-editor.
-           * 
+           *
            * @attribute mode
            * @type string
            * @default 'javascript'
@@ -110,7 +96,7 @@
           wrap: false,
 
         },
-        
+
 
         domReady: function(){
           if ( !this.value ) {
@@ -125,9 +111,9 @@
          * The `submit` method returns an object that respresents the submission of this question. The object has the following structure:
 
              {
-                questionUid: this.uid, 
+                questionUid: this.uid,
                 timestamp: new Date(),
-                submission: [] 
+                submission: []
              }
          * Only enabled when the `role` of the element is <b>viewer</b>.
          *
@@ -151,6 +137,6 @@
       Polymer('asq-code', p);
 
     })();
-    
+
   </script>
 </polymer-element>

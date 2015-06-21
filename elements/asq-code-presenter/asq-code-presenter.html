@@ -1,6 +1,7 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <link rel="import" href="../../../ace-element/ace-element.html">
 <link rel="import" href="../../../asq-base/asq-base.html">
+<link rel="import" href="../../../core-list/core-list.html">
 
 <!--
 `asq-code` is a question type where students can answer programming question proposed by professors. It is built above the `ace` editor.
@@ -21,53 +22,60 @@
 @blurb Element that used for programming questions.
 @homepage http://github.com/ASQ-USI/asq-code
 -->
-<polymer-element name="asq-code-presenter" attributes="fontSize tabSize disabled value theme mode wrap">
+<polymer-element name="asq-code-presenter" attributes="fontSize tabSize disabled value theme mode wrap" flex vertical layout>
   <template>
     <style>
     :host{
       min-width:100px;
-      min-height: 200px;
-      display: -webkit-box;
-      display: -moz-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-direction: normal;
-      -moz-box-direction: normal;
-      -webkit-box-orient: vertical;
-      -moz-box-orient: vertical;
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      position:relative;
+      min-height: 300px;
     }
 
     #aceContainer{
       position:relative;
+      min-height:150px;
+    }
+
+    #coreListContainer {
+      min-height:100px;
     }
 
     </style>
     <div id="leContent"><content select="asq-stem"></content></div>
     <div id="aceContainer" flex>
-      <ace-element id="editor" value="{{value}}" theme="{{theme}}" 
-      mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}"
+      <ace-element id="editor" value="{{$.leList.selection.name}}" theme="{{theme}}"
+      mode="{{mode}}" readonly="{{disabled}}" wrap?="{{wrap}}"
       fontSize="{{fontSize}}" tabSize="{{tabSize}}">{{value}}</ace-element>
     </div>
-    
+
+    <div id="coreListContainer" flex vertical layout>
+      <core-list id="leList" data="{{data}}" flex>
+        <template>
+          <div class="row {{ {selected: selected} | tokenList }}">
+            List row: {{index}}, User data from model: {{model.name}}
+            <input type="checkbox" checked="{{model.checked}}">
+          </div>
+        </template>
+      </core-list>
+    </div>
+
 
   </template>
 
   <script>
     (function () {
 
-      var p = {
+       p = {
+
+        data : [
+          {name: 'Bob', checked: true},
+          {name: 'Tim', checked: false},
+        ],
 
         publish: {
-
           /**
            * Set to true to style the element as disabled.
            * Bind to `readonly` of ace-editor.
-           * 
+           *
            * @attribute disabled
            * @type boolean
            * @default false
@@ -76,7 +84,7 @@
 
           /**
            * Set the content of the editor.
-           * 
+           *
            * @attribute value
            * @type object
            * @default null
@@ -85,7 +93,7 @@
 
           /**
            * Set or get the theme of ace-editor.
-           * 
+           *
            * @attribute theme
            * @type string
            * @default 'monokai'
@@ -94,7 +102,7 @@
 
           /**
            * Set or get the mode of ace-editor.
-           * 
+           *
            * @attribute mode
            * @type string
            * @default 'javascript'
@@ -104,7 +112,6 @@
           wrap: false,
 
         },
-        
 
         domReady: function(){
           if ( !this.value ) {
@@ -113,15 +120,17 @@
               this.value = code.textContent;
             }
           }
+
+          // this.$.leList.addEventListener("core-activate", this.onCoreActivate)
         },
 
         /**
          * The `submit` method returns an object that respresents the submission of this question. The object has the following structure:
 
              {
-                questionUid: this.uid, 
+                questionUid: this.uid,
                 timestamp: new Date(),
-                submission: [] 
+                submission: []
              }
          * Only enabled when the `role` of the element is <b>viewer</b>.
          *
@@ -145,6 +154,6 @@
       Polymer('asq-code-presenter', p);
 
     })();
-    
+
   </script>
 </polymer-element>

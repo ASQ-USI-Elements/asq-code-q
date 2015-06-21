@@ -14,7 +14,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.1",
     "ace-element": "PolymerLabs/ace-element#master",
-    "asq-base": "ASQ-USI/asq-base#master"
+    "asq-base": "ASQ-USI/asq-base#master",
+    "core-list": "Polymer/core-list#~0.5.6"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.0-rc1"
