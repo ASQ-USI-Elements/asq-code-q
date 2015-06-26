@@ -1,8 +1,6 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../asq-base/asq-base.html">
-<link rel="import" href="elements/asq-code-presenter/asq-code-presenter.html">
-<link rel="import" href="elements/asq-code-viewer/asq-code-viewer.html">
-
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../../../ace-element/ace-element.html">
+<link rel="import" href="../../../asq-base/asq-base.html">
 
 <!--
 `asq-code` is a question type where students can answer programming question proposed by professors. It is built above the `ace` editor.
@@ -23,34 +21,32 @@
 @blurb Element that used for programming questions.
 @homepage http://github.com/ASQ-USI/asq-code
 -->
-<polymer-element name="asq-code" attributes="fontSize tabSize disabled value theme mode wrap" vertical layout>
+<polymer-element name="asq-code-viewer" attributes="fontSize tabSize disabled value theme mode wrap" flex vertical layout>
   <template>
     <style>
     :host{
       min-width:100px;
-      min-height: 200px;
+      min-height: 300px;
+    }
+
+    #aceContainer{
+      position:relative;
     }
 
     </style>
+    <div id="leContent"><content select="asq-stem"></content></div>
+    <div id="aceContainer" flex>
+      <ace-element id="editor" value="{{value}}" theme="{{theme}}"
+      mode="{{mode}}" readonly="{{disabled}}" wrap?="{{wrap}}"
+      fontSize="{{fontSize}}" tabSize="{{tabSize}}">{{value}}</ace-element>
+    </div>
 
-    <!-- Viewer -->
-    <template if="{{role == roles.VIEWER}}">
-      <asq-code-viewer mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}" >
-        <content></content>
-      </asq-code-viewer>
-    </template>
-
-    <!-- Presenter -->
-   <template if="{{role == roles.PRESENTER}}">
-      <asq-code-presenter mode="{{mode}}" theme="{{theme}}" fontSize="{{fontSize}}" tabSize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
-        <content></content>
-      </asq-code-presenter>
-    </template>
 
   </template>
 
   <script>
     (function () {
+
 
       var p = {
 
@@ -134,7 +130,7 @@
       };
 
       ASQ.asqify(p, true);
-      Polymer('asq-code', p);
+      Polymer('asq-code-viewer', p);
 
     })();
 

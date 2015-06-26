@@ -10,7 +10,7 @@ var modulePath = "../../lib/asqCodePlugin";
 var fs = require("fs");
 
 describe("asqCodePlugin.js", function(){
-  
+
   before(function(){
     var then =  this.then = function(cb){
       return cb();
@@ -36,7 +36,8 @@ describe("asqCodePlugin.js", function(){
     //load html fixtures
     this.simpleHtml = fs.readFileSync(require.resolve('./fixtures/simple.html'), 'utf-8');
     this.noStemHtml = fs.readFileSync(require.resolve('./fixtures/no-stem.html'), 'utf-8');
-    
+    this.codeSnippet1 = fs.readFileSync(require.resolve('./fixtures/code-snippet1.txt'), 'utf-8');
+
     this.asqCodePlugin = require(modulePath);
   });
 
@@ -92,24 +93,15 @@ describe("asqCodePlugin.js", function(){
 
   });
 
-  describe.skip("processEl", function(){
+  describe("processEl", function(){
 
-    before(function(){
-     sinon.stub(this.asqCodePlugin.prototype, "parseOptions").returns([]);
-    });
-
-    beforeEach(function(){
-      this.asqcode = new this.asqCodePlugin(this.asq);
-      this.asqCodePlugin.prototype.parseOptions.reset();
-    });
-
-    after(function(){
-     this.asqCodePlugin.prototype.parseOptions.restore();
-    });
+     beforeEach(function(){
+       this.asqcode = new this.asqCodePlugin(this.asq);
+     });
 
     it("should assign a uid to the question if there's not one", function(){
       var $ = cheerio.load(this.simpleHtml);
-      
+
       //this doesn't have an id
       var el = $("#no-uid")[0];
       this.asqcode.processEl($, el);
@@ -123,30 +115,30 @@ describe("asqCodePlugin.js", function(){
       $(el).attr('uid').should.equal("a-uid");
     });
 
-    it("should call parseOptions()", function(){
-      var $ = cheerio.load(this.simpleHtml);
-      var el = $(this.tagName)[0];
-
-      this.asqcode.processEl($, el);
-      this.asqcode.parseOptions.calledOnce.should.equal(true);
-    });
-
     it("should find the stem if it exists", function(){
       var $ = cheerio.load(this.simpleHtml);
       var el = $(this.tagName)[0];
       var elWithHtmlInStem = $(this.tagName)[1];
 
       var result = this.asqcode.processEl($, el);
-      expect(result.data.stem).to.equal("This is a stem");
+      expect(result.data.stem).to.equal("<h4>Implement a for loop in Java</h4>");
 
       var result = this.asqcode.processEl($, elWithHtmlInStem);
-      expect(result.data.stem).to.equal("This is a stem <em>with some HTML</em>");
+      expect(result.data.stem).to.equal("<h4>Implement a for loop in Java</h4>");
 
 
       var $ = cheerio.load(this.noStemHtml);
       var el = $(this.tagName)[0];
       var result = this.asqcode.processEl($, el);
       expect(result.data.stem).to.equal("");
+    });
+
+    it("should correctly parse the code element", function(){
+      var $ = cheerio.load(this.simpleHtml);
+      var el = $(this.tagName)[0];
+
+      var result = this.asqcode.processEl($, el);
+      expect(result.data.code).to.equal(this.codeSnippet1);
     });
 
     it("should return correct data", function(){
@@ -156,8 +148,8 @@ describe("asqCodePlugin.js", function(){
       var result = this.asqcode.processEl($, el);
       expect(result._id).to.equal("a-uid");
       expect(result.type).to.equal(this.tagName);
-      expect(result.data.stem).to.equal("This is a stem <em>with some HTML</em>");
-      expect(result.data.options).to.deep.equal([]);
+      expect(result.data.stem).to.equal("<h4>Implement a for loop in Java</h4>");
+      expect(result.data.code).to.equal(this.codeSnippet1);
     });
   });
 
