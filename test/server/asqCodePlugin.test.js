@@ -20,7 +20,7 @@ describe("asqCodePlugin.js", function(){
       then: then
     });
 
-    this.tagName = "asq-code";
+    this.tagName = "asq-code-q";
 
     this.asq = {
       registerHook: function(){},
@@ -57,7 +57,7 @@ describe("asqCodePlugin.js", function(){
      this.asqCodePlugin.prototype.processEl.restore();
     });
 
-    it("should call processEl() for all asq-code elements", function(done){
+    it("should call processEl() for all asq-code-q elements", function(done){
       this.asqcode.parseHtml(this.simpleHtml)
       .then(function(){
         this.asqcode.processEl.calledTwice.should.equal(true);

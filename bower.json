@@ -1,10 +1,10 @@
 {
-  "name": "asq-code",
-  "version": "0.0.0",
-  "homepage": "https://github.com/ASQ-USI/asq-code",
+  "name": "asq-code-q",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ASQ-USI-Elements/asq-code-q",
   "authors": [
     "Vasileios Triglianos <triglian@gmail.com>",
-    "Zhenfei Nie <zhenfei.nie@gmail.com>"
+    "Zhenfei Nie <youyis2fox@gmail.com>"
   ],
   "description": "ASQ Code question element",
   "keywords": [
@@ -14,7 +14,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.1",
     "ace-element": "PolymerLabs/ace-element#master",
-    "asq-base": "ASQ-USI/asq-base#master",
+    "asq-base": "ASQ-USI-Elements/asq-base#master",
     "core-list": "Polymer/core-list#~0.5.6"
   },
   "ignore": [ "index.js", "lib", "package.json", "node_modules", ".npmignore", "test/server"],

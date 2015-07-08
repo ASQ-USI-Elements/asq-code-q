@@ -1,16 +1,16 @@
 {
-  "name": "asq-code",
-  "version": "0.0.0",
+  "name": "asq-code-q",
+  "version": "0.1.0",
   "description": "ASQ Code question plugin",
   "author": "Zhenfei Nie <zhen.fei.nie@usi.ch>, Vassilis Triglianos <triglian@gmail.com>",
-  "homepage": "https://github.com/ASQ-USI/asq-code",
+  "homepage": "https://github.com/ASQ-USI/asq-code-q",
   "main": "index.js",
   "scripts": {
     "test": "mocha --harmony test/server"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ASQ-USI/asq-code.git"
+    "url": "git@github.com:ASQ-USI/asq-code-q.git"
   },
   "keywords": [
     "node.js"
