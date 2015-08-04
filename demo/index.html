@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="asq-code-q" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+  <title>asq-code-q | Demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents.js"></script>
+  <link href="../asq-code-q.html" rel="import">
+  <link href="../../asq-stem/asq-stem.html" rel="import">
+
+  <style>
+    body{
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    asq-code-q {
+      height: 500px;
+      width: 600px;
+    }
+
+  </style>
+
+</head>
+<body unresolved>
+  <h3>Viewer</h3>
+  <asq-code-q mode="java" role="viewer">
+    <asq-stem><h4>Implement the quick sort algorithm in Java</h4></asq-stem>
+    <code>public class Main {
+    public static void main(String args[]) {
+
+    }
+} </code>
+  </asq-code-q>
+  
+  <h3>Presenter</h3>
+  <asq-code-q mode="java" role="presenter">
+    <asq-stem><h4>Implement the quick sort algorithm in Java</h4></asq-stem>
+    <code>public class Main {
+    public static void main(String args[]) {
+
+    }
+} </code>
+  </asq-code-q>
+  <script>
+  var pASQCodeQ = document.querySelector("asq-code-q[role='presenter']");
+  var pASQCodeQPresenter = Polymer.dom(pASQCodeQ.root).querySelector('asq-code-q-presenter')
+  pASQCodeQPresenter._answers = [
+      {
+        name: 'Bob',
+        checked: true
+      },
+      {
+        name: 'Tim',
+        checked: false
+      }
+    ];
+  </script>
+
+</body>
+</html>
