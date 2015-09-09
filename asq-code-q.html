@@ -38,14 +38,14 @@
 
     <!-- Viewer -->
     <template is="dom-if" if="{{hasRole(roles.VIEWER)}}" restamp>
-      <asq-code-q-viewer id="le-viewer" mode="{{mode}}" theme="{{theme}}" fontsize="{{fontSize}}" tabsize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
+      <asq-code-q-viewer id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
         <content></content>
       </asq-code-q-viewer>
     </template>
 
     <!-- Presenter -->
    <template is="dom-if" if="{{hasRole(roles.PRESENTER)}}" restamp>
-      <asq-code-q-presenter id="le-presenter" mode="{{mode}}" theme="{{theme}}" fontsize="{{fontSize}}" tabsize="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
+      <asq-code-q-presenter id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap?="{{wrap}}">
         <content></content>
       </asq-code-q-presenter>
     </template>
@@ -74,8 +74,8 @@
          * The fontSize property of the ace-element.
          */
         fontSize: { 
-          type: Number,
-          value: 12,
+          type: String,
+          value: "12px",
           notify: true,
           reflectToAttribute: true
         },
@@ -154,7 +154,7 @@
 
         submission.questionUid = this.uid;
         submission.timestamp= new Date();
-        
+
         return submission;
       },
 

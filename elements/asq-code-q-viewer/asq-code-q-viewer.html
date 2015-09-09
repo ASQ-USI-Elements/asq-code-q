@@ -30,7 +30,7 @@
   <template>
     <div id="leContent"><content select="asq-stem"></content></div>
     <div id="aceContainer" flex="">
-      <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap?="{{wrap}}" fontsize="{{fontSize}}" tabsize="{{tabSize}}">{{value}}</ace-element>
+      <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap?="{{wrap}}" font-size="{{fontSize}}" tab-size="{{tabSize}}">{{value}}</ace-element>
     </div>
 
   </template>
@@ -56,8 +56,8 @@
          * The fontSize property of the ace-element.
          */
         fontSize: { 
-          type: Number,
-          value: 12,
+          type: String,
+          value: "12px",
           notify: true,
           reflectToAttribute: true
         },

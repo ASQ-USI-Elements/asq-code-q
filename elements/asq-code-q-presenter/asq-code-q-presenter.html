@@ -85,8 +85,8 @@
          * The fontSize property of the ace-element.
          */
         fontSize: { 
-          type: Number,
-          value: 12,
+          type: String,
+          value: "12px",
           notify: true,
           reflectToAttribute: true
         },
@@ -159,7 +159,7 @@
       },
 
       _computeClass: function (selected) {
-        var classList = 'row';
+        var classList = 'row list-item';
         if (selected) classList += ' selected';
         return classList;
       }
