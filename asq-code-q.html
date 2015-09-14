@@ -7,7 +7,8 @@
 <!--
 `asq-code-q` is a question type where students can answer code based questions. It is built on top of the `ace` editor.
 
-##### Example
+Example:
+
     <asq-code-q mode="java" tabsize="2">
       <asq-stem><h4>Implement a for loop in Java</h4></asq-stem>
       <code>public class C {
@@ -56,7 +57,9 @@
   (function () {
     Polymer({
       is: 'asq-code-q',
+
       behaviors: [ASQ.asqQuestionElementBehavior],
+      
       properties: {
 
         /**
