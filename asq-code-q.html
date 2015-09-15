@@ -38,14 +38,14 @@ Example:
   <template>
 
     <!-- Viewer -->
-    <template is="dom-if" if="{{hasRole(roles.VIEWER)}}" restamp>
+    <template is="dom-if" if="{{hasRole(role, roles.VIEWER)}}" restamp>
       <asq-code-q-viewer id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
         <content></content>
       </asq-code-q-viewer>
     </template>
 
     <!-- Presenter -->
-   <template is="dom-if" if="{{hasRole(roles.PRESENTER)}}" restamp>
+   <template is="dom-if" if="{{hasRole(role, roles.PRESENTER)}}" restamp>
       <asq-code-q-presenter id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
         <content></content>
       </asq-code-q-presenter>
@@ -170,8 +170,8 @@ Example:
         }
       },
 
-      hasRole: function (role) {
-        return this.role == role;
+      hasRole: function (role, candidate) {
+        return role == candidate;
       }
     });
   }());
