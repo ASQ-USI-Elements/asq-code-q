@@ -112,6 +112,15 @@
           value: false,
           notify: true,
           reflectToAttribute: true,
+        },
+
+        /**
+         * Event bus to communicate with ASQ
+         */
+        eventBus: {
+          type: Object,
+          observer: "_eventBusChanged",
+          notify: true
         }
       },
       /**

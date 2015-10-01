@@ -39,14 +39,14 @@ Example:
 
     <!-- Viewer -->
     <template is="dom-if" if="{{hasRole(role, roles.VIEWER)}}" restamp>
-      <asq-code-q-viewer uid="[[uid]]" id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
+      <asq-code-q-viewer uid="[[uid]]" id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}" event-bus="[[eventBus]]">
         <content></content>
       </asq-code-q-viewer>
     </template>
 
     <!-- Presenter -->
    <template is="dom-if" if="{{hasRole(role, roles.PRESENTER)}}" restamp>
-      <asq-code-q-presenter uid="[[uid]]" id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
+      <asq-code-q-presenter uid="[[uid]]" id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}" event-bus="[[eventBus]]">
         <content></content>
       </asq-code-q-presenter>
     </template>
@@ -131,6 +131,14 @@ Example:
           value: false,
           notify: true,
           reflectToAttribute: true,
+        },
+
+        /**
+         * Event bus to communicate with ASQ
+         */
+        eventBus: {
+          type: Object,
+          notify: true
         }
       },
 
@@ -163,6 +171,11 @@ Example:
             this.value = code.textContent;
           }
         }
+
+        document.addEventListener('asq-ready', function (evt) {
+          this.eventBus = evt.detail.asqEventBus
+        }.bind(this));
+
       },
 
       hasRole: function (role, candidate) {
