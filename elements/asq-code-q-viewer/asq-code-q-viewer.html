@@ -30,7 +30,7 @@
   <template>
     <div id="leContent"><content select="asq-stem"></content></div>
     <div id="aceContainer" flex="">
-      <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}" font-size="{{fontSize}}" tab-size="{{tabSize}}">{{value}}</ace-element>
+      <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}" font-size="{{fontSize}}" tab-size="{{tabSize}}">[[value]]</ace-element>
     </div>
 
   </template>
@@ -98,9 +98,10 @@
          */
         value: {
           type: String,
-          value: null,
+          value: '',
           notify: true,
           reflectToAttribute: true,
+          observer: '_valueChanged'
         },
 
         /**
@@ -125,21 +126,88 @@
        *
        * @method submit
        */
+      // submit: function () {
+      //   var submission = this.$.editor.editor.session.getValue();
+      //   return {
+      //     submission: submission
+      //   };
+      // },
+
+      attached: function(){
+        //delay to make sure ace-editors are initialized
+        setTimeout(function(){
+          this.$.editor.addEventListener('editor-input', this._editorValueChanged.bind(this))
+          this.$.editor.editor.resize();
+        }.bind(this), 1)
+      },
+
+      _valueChanged: function(newVal){
+        if(this.value && this.$.editor.editorValue != this.value){
+          this.$.editor.editorValue = this.value;
+          this.$.editor.editor.clearSelection(1);
+        }
+      },
+
+      _editorValueChanged: function(evt){
+        this.value = evt.target.editorValue;
+      },
+
+      /**
+       * The `submit` method returns an object that respresents the submission of this question. The object has the following structure:
+
+           {
+              questionUid: this.uid, 
+              timestamp: new Date(),
+              submission: this.value
+           }
+       * Only enabled when the `role` of the element is <b>viewer</b>.
+       *
+       * @method submit
+       */
+
       submit: function () {
-        var submission = this.$.editor.editor.session.getValue();
+        if (!this.value) {
+          this.value = '';
+        }
+        submission = this.value;
         return {
+          questionUid: this.uid,
+          timestamp: new Date(),
           submission: submission
         };
       },
 
-      ready: function () {
-        if (!this.value) {
-          var code = Polymer.dom(this).querySelector('code');
-          if (code) {
-            //this.value = code.textContent;
-            //console.log(code.textContent)
+      // ready: function () {
+      //   if (!this.value) {
+      //     var code = Polymer.dom(this).querySelector('code');
+      //     if (code) {
+      //       //this.value = code.textContent;
+      //       //console.log(code.textContent)
+      //     }
+      //   }
+      // }
+
+      _onQuestionType: function (evt) {
+        if (!evt || !evt.questionType)
+          return;
+        if (evt.questionType == 'asq-fiddle-q') {
+          if (evt.type == 'restoreViewer') {
+            this._onRestoreViewer(evt);
           }
         }
+      },
+
+      _onRestoreViewer: function (evt) {
+        evt.questions.forEach(function (q) {
+          if (q.uid != this.uid)
+            return;
+         this.value = q.submission;
+        }.bind(this));
+      },
+
+      _eventBusChanged: function (eventBus, old) {
+        if(!eventBus) return;
+        eventBus.on('asq:question_type', this._onQuestionType.bind(this));
       }
     });
   }());

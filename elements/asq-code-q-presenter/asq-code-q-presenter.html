@@ -3,7 +3,10 @@
 <link rel="import" href="../../../asq-base/asq-base.html">
 <link rel="import" href="../../../iron-list/iron-list.html">
 <link rel="import" href="../../../iron-flex-layout/iron-flex-layout.html">
-
+<link rel="import" href="../../../paper-item/paper-item.html">
+<link rel="import" href="../../../paper-tabs/paper-tab.html">
+<link rel="import" href="../../../paper-tabs/paper-tabs.html">
+<link rel="import" href="../../../paper-styles/color.html">
 <!--
 `asq-code-q-presenter` is the __presenter__ version of `asq-code-q`. It's not intended to be used on its own.
 
@@ -18,44 +21,80 @@
     :host{
       @apply(--layout-vertical);
       @apply(--layout-flex);
+      --paper-tabs-selection-bar-color: #333;
       min-width:100px;
       min-height: 300px;
+    }
+
+    #le-content{
+     @apply(--layout-horizontal);
+     @apply(--layout-flex);
+     @apply(--asq-code-q-content);
     }
 
     #aceContainer{
       position:relative;
       min-height:150px;
-      @apply(--layout-flex);
+      @apply(--layout-flex-3);
+      @apply(--asq-code-q-aceContainer);
     }
 
-    #list-container {
+    #list-container{
+      @apply(--layout-flex);
       @apply(--layout-vertical);
+     }
+
+    #submissionListWrapper{
       @apply(--layout-flex);
-      min-height:100px;
+      display: none;
     }
 
-    #leList {
-      @apply(--layout-flex);
-    }
+     #submissionList {
+       @apply(--layout-flex);
+     }
+
+     #submissionList paper-item{
+       overflow:hidden;
+       padding: 12px 5px 0;
+       background-color: white;
+       cursor: pointer;
+       font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+       @apply(--shadow-elevation-2dp);
+       outline:none;
+     }
+
+      #submissionList paper-item[focused]{
+        background-color: var(--google-grey-300);
+      }
+
 
     </style>
   <template>
-    <div id="leContent"><content select="asq-stem"></content></div>
-    <div id="aceContainer">
-      <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}" font-size="{{fontSize}}" tabsize="{{tabSize}}">{{value}}</ace-element>
+    <div class="content-wrapper">
+      <content select="asq-stem"></content>
     </div>
+    
+    <div id="le-content">
+      <div id="aceContainer">
+        <ace-element id="editor" theme="{{theme}}" mode="{{mode}}" readonly="{{disabled}}" wrap="{{wrap}}" font-size="{{fontSize}}" tabsize="{{tabSize}}">{{value}}</ace-element>
+      </div>
 
-    <div id="list-container">
-      <iron-list id="leList" items="[[_answers]]" as="answer">
-        <template>
-          <div class="{{_computeClass(selected)}}">
-            #<span>[[index]]</span>, Answer data from user: <span>[[answer.name]]</span>
-            <input type="checkbox" checked="[[answer.checked]]">
+      <div id="list-container">
+        <paper-tabs selected="0" selected-attribute="active" noink role="tablist">     
+          <!-- <paper-tab role="tab"></paper-tab> -->
+          <paper-tab on-click="toggleSubmissionList" role="tab">Submissions</paper-tab>            
+        </paper-tabs>
+          <!-- <div></div> -->
+          <div id="submissionListWrapper">
+            <iron-list id="submissionList" items="[[_submissions]]" as="submission" selection-enabled selected-item="{{_selectedSubmissionItem}}">
+              <template>
+                <paper-item>#<span>[[indexPlusOne(index)]]</span>&nbsp;&nbsp;<span>[[submission.submission]]</span>
+                </paper-item>
+              </template>
+            </iron-list>
           </div>
-        </template>
-      </iron-list>
+      </div>
     </div>
-
 
   </template>
 </dom-module>
@@ -128,9 +167,10 @@
          */
         value: {
           type: String,
-          value: null,
+          value: '',
           notify: true,
           reflectToAttribute: true,
+          observer: '_valueChanged'
         },
 
         /**
@@ -141,29 +181,89 @@
           value: false,
           notify: true,
           reflectToAttribute: true,
+        },
+
+        _selectedSubmissionItem: {
+          observer: '_selectedSubmissionItemChanged'
+        },
+
+        _selectedTab:{
+          notify: true
+        },
+
+        /**
+         * Event bus to communicate with ASQ
+         */
+        eventBus: {
+          type: Object,
+          observer: "_eventBusChanged",
+          notify: true
         }
       },
 
-      ready: function () {
-        if (!this.value) {
-          var code = Polymer.dom(this).querySelector('code');
-          if (code) {
-            this.value = code.textContent;
-            console.log(code.textContent)
+      toggleSubmissionList: function(evt, detail){
+        var current = this.$.submissionListWrapper.style.display;
+        this.$.submissionListWrapper.style.display = (current == 'flex') ? 'none': 'flex';
+        this.$.submissionList._update();
+      },
+
+      attached: function(){
+        //delay to make sure ace-editors are initialized
+        setTimeout(function(){
+          this.$.editor.addEventListener('editor-input', this._editorValueChanged.bind(this))
+          this.$.editor.editor.resize();
+        }.bind(this), 1)
+      },
+
+      indexPlusOne: function(index){
+        return ++index;
+      },
+
+      _valueChanged: function(newVal){
+        if(this.value && this.$.editor.editorValue != this.value){
+          this.$.editor.editorValue = this.value;
+          this.$.editor.editor.clearSelection(1);
+        }
+      },
+
+      _editorValueChanged: function(evt){
+        this.value = evt.target.editorValue;
+      },
+
+      _selectedSubmissionItemChanged: function(newItem, old){
+        if(! newItem) return;
+        this.value = newItem.submission;
+      },
+
+      _onQuestionType: function (evt) {
+        if (!evt || !evt.questionType)
+          return;
+        if (evt.questionType == 'asq-js-function-body-q') {
+          if (evt.type == 'progress') {
+            this._onProgress(evt);
+          } else if (evt.type == 'restorePresenter') {
+            this._onRestorePresenter(evt);
           }
         }
-
-        //somehow the list doesn't get rendered correctly
-        setTimeout(function(){
-          this.$.leList._render();
-        }.bind(this), 10);
-        
       },
 
-      _computeClass: function (selected) {
-        var classList = 'row list-item';
-        if (selected) classList += ' selected';
-        return classList;
+      _onRestorePresenter: function (evt) {
+        evt.questions.forEach(function(q){
+         if(q.uid != this.uid) return;
+         this._submissions = q.answers;
+        }.bind(this));
+      },
+
+      _onProgress: function (evt) {
+        if (!evt.question || evt.question.uid !== this.uid)
+          return;
+
+        this._submissions = evt.question.answers;
+      },
+
+      _eventBusChanged: function (eventBus, old) {
+        if(!eventBus) return;
+        eventBus.on('asq:question_type', this._onQuestionType.bind(this));
       }
     });
   }());

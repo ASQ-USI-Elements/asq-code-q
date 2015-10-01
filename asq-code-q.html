@@ -39,14 +39,14 @@ Example:
 
     <!-- Viewer -->
     <template is="dom-if" if="{{hasRole(role, roles.VIEWER)}}" restamp>
-      <asq-code-q-viewer id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
+      <asq-code-q-viewer uid="[[uid]]" id="le-viewer" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
         <content></content>
       </asq-code-q-viewer>
     </template>
 
     <!-- Presenter -->
    <template is="dom-if" if="{{hasRole(role, roles.PRESENTER)}}" restamp>
-      <asq-code-q-presenter id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
+      <asq-code-q-presenter uid="[[uid]]" id="le-presenter" mode="{{mode}}" theme="{{theme}}" font-size="{{fontSize}}" tab-size="{{tabSize}}" disabled="{{disabled}}" value="{{value}}" wrap="{{wrap}}">
         <content></content>
       </asq-code-q-presenter>
     </template>
@@ -147,18 +147,13 @@ Example:
        * @method submit
        */
       submit: function () {
-        if (this.role !== this.roles.VIEWER) {
-          return;
-        }
-
-        var submission = Polymer.dom(this.root).querySelector('#le-viewer').submit();
-
-        if(! submission){ return; }
-
-        submission.questionUid = this.uid;
-        submission.timestamp= new Date();
-
-        return submission;
+       if (this.role == this.roles.VIEWER) {
+         var el = this.$$('#le-viewer');
+         if (!el) {
+           throw new Error('submit(): expected #le-viewer element to exist');
+         }
+         return el.submit();
+       }
       },
 
       ready: function () {
