@@ -80,11 +80,9 @@
       </div>
 
       <div id="list-container">
-        <paper-tabs selected="0" selected-attribute="active" noink role="tablist">     
-          <!-- <paper-tab role="tab"></paper-tab> -->
+        <paper-tabs selected="0" selected-attribute="active" noink role="tablist">
           <paper-tab on-click="toggleSubmissionList" role="tab">Submissions</paper-tab>            
         </paper-tabs>
-          <!-- <div></div> -->
           <div id="submissionListWrapper">
             <iron-list id="submissionList" items="[[_submissions]]" as="submission" selection-enabled selected-item="{{_selectedSubmissionItem}}">
               <template>
