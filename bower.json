@@ -12,14 +12,14 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "polymer": "polymer/polymer#~1.1.4",
+    "polymer": "polymer/polymer#~1.2.1",
     "ace-element": "triglian/ace-element#master",
-    "asq-base": "ASQ-USI-Elements/asq-base#feat-polymer-1",
-    "iron-list": "polymerelements/iron-list#~1.1.2",
-    "paper-tabs": "polymerelements/paper-tabs#~1.0.3",
-    "paper-item": "PolymerElements/paper-item#~1.0.3",
-    "paper-styles": "PolymerElements/paper-styles#~1.0.11",
-    "iron-collapse": "PolymerElements/iron-collapse#~1.0.3"
+    "asq-base": "ASQ-USI-Elements/asq-base#master",
+    "iron-list": "polymerelements/iron-list#~1.1.5",
+    "paper-tabs": "polymerelements/paper-tabs#~1.0.10",
+    "paper-item": "PolymerElements/paper-item#~1.0.7",
+    "paper-styles": "PolymerElements/paper-styles#~1.0.12",
+    "iron-collapse": "PolymerElements/iron-collapse#~1.0.4"
   },
   "ignore": [
     "index.js",
