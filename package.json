@@ -16,7 +16,7 @@
     "node.js"
   ],
   "bugs": {
-    "url": "https://github.com/ASQ-USI/asq-multi-choice/issues"
+    "url": "https://github.com/ASQ-USI/asq-code-q/issues"
   },
   "dependencies": {
     "asq-plugin": "ASQ-USI/asq-plugin",
