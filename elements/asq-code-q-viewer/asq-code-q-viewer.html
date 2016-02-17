@@ -14,19 +14,20 @@
 -->
 <dom-module id="asq-code-q-viewer">
   <style>
-    :host{
-      @apply(--layout-vertical);
-      @apply(--layout-flex)
-      min-width:100px;
-      min-height: 300px;
-    }
-
     :host[disabled]{
       opacity:0.65;
     }
 
+    :host{
+      @apply(--layout-vertical);
+      @apply(--layout-flex);
+      position: relative;
+      min-width:100px;
+      min-height: 300px;
+    }
+
     #aceContainer{
-      @apply(--layout-flex)
+      @apply(--layout-flex);
       position:relative;
     }
 
