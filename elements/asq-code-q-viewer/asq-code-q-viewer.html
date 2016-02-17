@@ -21,6 +21,10 @@
       min-height: 300px;
     }
 
+    :host[disabled]{
+      opacity:0.65;
+    }
+
     #aceContainer{
       @apply(--layout-flex)
       position:relative;
@@ -50,7 +54,7 @@
           type: Boolean,
           value: false,
           notify: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
         },
 
         /**
